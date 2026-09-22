@@ -250,8 +250,8 @@ input_key_kitty(struct screen *s, struct bufferevent *bev, key_code key)
 	ikk = input_kitty_lookup(key);
 	if (ikk != NULL) {
 		if ((flags & KITTY_KEY_REPORT_ALL) == 0) {
-			if (ikk->key == C0_CR || ikk->key == C0_HT ||
-			    ikk->key == KEYC_BSPACE)
+			if (modifiers == 0 && (ikk->key == C0_CR ||
+			    ikk->key == C0_HT || ikk->key == KEYC_BSPACE))
 				return (-1);
 			if (ikk->final != 'u' &&
 			    (modifiers & (KEYC_SUPER|KEYC_HYPER)) == 0)
