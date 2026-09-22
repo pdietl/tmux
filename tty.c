@@ -504,8 +504,7 @@ tty_stop_tty(struct tty *tty)
 	if (tty_term_has(tty->term, TTYC_DSBP))
 		tty_raw(tty, tty_term_string(tty->term, TTYC_DSBP));
 
-	if (tty->term->flags & TERM_VT100LIKE)
-		tty_raw(tty, "\033[?7727l");
+	tty_raw(tty, tty_term_string(tty->term, TTYC_DSESC));
 	tty_raw(tty, tty_term_string(tty->term, TTYC_DSFCS));
 	tty_raw(tty, tty_term_string(tty->term, TTYC_DSEKS));
 	if (tty->flags & TTY_KKBPUSHED) {
@@ -570,8 +569,7 @@ tty_update_features(struct tty *tty)
 	tty_update_kitty(tty, NULL);
 	if (options_get_number(global_options, "focus-events"))
 		tty_puts(tty, tty_term_string(tty->term, TTYC_ENFCS));
-	if (tty->term->flags & TERM_VT100LIKE)
-		tty_puts(tty, "\033[?7727h");
+	tty_puts(tty, tty_term_string(tty->term, TTYC_ENESC));
 
 	/*
 	 * Features might have changed since the first draw during attach. For
